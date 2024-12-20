@@ -8,50 +8,78 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url:'' , branch:'main'
+                git url:'https://github.com/imraneahm/GestionBibliotheque.git', branch:'main'
             }
         }
+
         stage('Build') {
             steps {
                 sh '${MAVEN_HOME}/bin/mvn clean compile'
             }
         }
+
         stage('Test') {
             steps {
                 sh '${MAVEN_HOME}/bin/mvn test'
             }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
+            }
         }
+
         stage('Quality Analysis') {
             steps {
-            withCredentials([string(credentialsId:'	sonar-token',variable:'	sonar-token')]){
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQube') {
                         sh """
-                        ${MAVEN_HOME}/bin/mvn clean verify sonar:sonar\
+                        ${MAVEN_HOME}/bin/mvn clean verify sonar:sonar \
                           -Dsonar.projectKey=library-management \
                           -Dsonar.projectName='library-management' \
                           -Dsonar.host.url=http://host.docker.internal:9000 \
-                          -Dsonar.token=sqp_77184bb20899618f745968eb22c6533d43755af1
+                          -Dsonar.token=${SONAR_TOKEN}
                         """
                     }
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 echo 'Déploiement simulé réussi'
             }
         }
     }
+
     post {
         success {
-            mail to: '',
-                subject: 'Build Success',
-                body: 'Le build a été complété avec succès.'
+            mail to: 'imraneaithammou1@gmail.com',
+                subject: "Pipeline réussie: ${currentBuild.fullDisplayName}",
+                body: """
+                    Le build a été complété avec succès.
+                    Build URL: ${BUILD_URL}
+                    Détails du build :
+                    - Branche: main
+                    - Commit: ${GIT_COMMIT}
+                    - Build number: ${BUILD_NUMBER}
+                    """
         }
         failure {
-            mail to: '',
-                subject: 'Build Failed',
-                body: 'Le build a échoué.'
+            mail to: 'imraneaithammou1@gmail.com',
+                subject: "Pipeline échouée: ${currentBuild.fullDisplayName}",
+                body: """
+                    Le build a échoué.
+                    Build URL: ${BUILD_URL}
+                    Détails du build :
+                    - Branche: main
+                    - Commit: ${GIT_COMMIT}
+                    - Build number: ${BUILD_NUMBER}
+                    Veuillez vérifier les logs pour plus de détails.
+                    """
+        }
+        always {
+            cleanWs()
         }
     }
 }

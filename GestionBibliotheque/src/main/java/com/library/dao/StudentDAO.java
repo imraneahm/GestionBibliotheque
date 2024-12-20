@@ -14,7 +14,7 @@ public class StudentDAO {
 
     // Méthode pour ajouter un étudiant
     public void addStudent(Student student) {
-        String query = "INSERT INTO students (name, email,id) VALUES (?, ?,?)";
+        String query = "INSERT INTO student (name, email,id) VALUES (?, ?,?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, student.getName());
@@ -27,7 +27,7 @@ public class StudentDAO {
     }
     // Méthode pour mettre à jour un étudiant
     public void updateStudent(Student student) {
-        String query = "UPDATE students SET name = ?, email = ? WHERE id = ?";
+        String query = "UPDATE student SET name = ?, email = ? WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, student.getName());
@@ -40,7 +40,7 @@ public class StudentDAO {
     }
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
-        String sql = "SELECT * FROM students";
+        String sql = "SELECT * FROM student";
         try (Connection connection = DbConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
@@ -54,7 +54,7 @@ public class StudentDAO {
     }
 
     public Student findStudentById(int id) {
-        String sql = "SELECT * FROM students WHERE id = ?";
+        String sql = "SELECT * FROM student WHERE id = ?";
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
@@ -69,7 +69,7 @@ public class StudentDAO {
     }
     // Méthode pour obtenir un étudiant par ID
     public Optional<Student> getStudentById(int id) {
-        String query = "SELECT * FROM students WHERE id = ?";
+        String query = "SELECT * FROM student WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -89,7 +89,7 @@ public class StudentDAO {
     }
     // Méthode pour supprimer un étudiant
     public void deleteStudent(int id) {
-        String query = "DELETE FROM students WHERE id = ?";
+        String query = "DELETE FROM student WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -99,7 +99,7 @@ public class StudentDAO {
         }
     }
     public void deleteAllStudents() {
-        String query = "DELETE FROM students";
+        String query = "DELETE FROM student";
         try (PreparedStatement statement = DbConnection.getConnection().prepareStatement(query)) {
             statement.executeUpdate();
         } catch (SQLException e) {

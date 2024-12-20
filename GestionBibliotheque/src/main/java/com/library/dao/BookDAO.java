@@ -14,7 +14,7 @@ public class BookDAO {
 
     // Ajoutez la méthode pour obtenir un livre par son ID
     public Optional<Book> getBookById(int id) {
-        String query = "SELECT * FROM books WHERE id = ?";
+        String query = "SELECT * FROM book WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -37,7 +37,7 @@ public class BookDAO {
     // Ajoutez la méthode pour obtenir tous les livres
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT * FROM books";
+        String query = "SELECT * FROM book";
         try (Connection conn = DbConnection.getConnection();
              Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
@@ -58,7 +58,7 @@ public class BookDAO {
 
     // Ajoutez la méthode pour ajouter un livre
     public void addBook(Book book) {
-        String query = "INSERT INTO books (title, author, isbn, published_year, available,id) VALUES (?, ?, ?, ?, ?,?)";
+        String query = "INSERT INTO book (title, author, isbn, published_year, available,id) VALUES (?, ?, ?, ?, ?,?)";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
@@ -75,7 +75,7 @@ public class BookDAO {
     // Supprimer tous les livres
     // Ajoutez la méthode pour mettre à jour un livre
     public void updateBook(Book book) {
-        String query = "UPDATE books SET title = ?, author = ?, available = ? WHERE id = ?";
+        String query = "UPDATE book SET title = ?, author = ?, available = ? WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, book.getTitle());
@@ -90,7 +90,7 @@ public class BookDAO {
 
     // Ajoutez la méthode pour supprimer un livre
     public void deleteBook(int id) {
-        String query = "DELETE FROM books WHERE id = ?";
+        String query = "DELETE FROM book WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -100,7 +100,7 @@ public class BookDAO {
         }
     }
     public Book findBookById(int id) {
-        String query = "SELECT * FROM books WHERE id = ?";
+        String query = "SELECT * FROM book WHERE id = ?";
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
@@ -121,7 +121,7 @@ public class BookDAO {
     }
     // Supprimer tous les livres
     public String deleteAll() {
-        String sql = "DELETE FROM books";
+        String sql = "DELETE FROM book";
         try (Connection connection = DbConnection.getConnection();
              Statement statement = connection.createStatement()) {
 

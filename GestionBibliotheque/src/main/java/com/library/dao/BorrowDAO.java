@@ -12,7 +12,7 @@ import java.util.List;
 public class BorrowDAO {
 
     public void addBorrow(Borrow borrow) {
-        String sql = "INSERT INTO borrows (student_id, book_id, borrow_date, return_date) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO borrow (student_id, book_id, borrow_date, return_date) VALUES (?, ?, ?, ?)";
         try (Connection connection = DbConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, borrow.getStudent().getId());
@@ -27,7 +27,7 @@ public class BorrowDAO {
 
     public List<Borrow> getAllBorrows() {
         List<Borrow> borrows = new ArrayList<>();
-        String sql = "SELECT * FROM borrows";
+        String sql = "SELECT * FROM borrow";
         try (Connection connection = DbConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
