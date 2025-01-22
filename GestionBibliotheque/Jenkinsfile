@@ -14,12 +14,14 @@ pipeline {
 
         stage('Build') {
             steps {
+            echo : 'Building'
                 sh '${MAVEN_HOME}/bin/mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
+                        echo : 'Test'
                 sh '${MAVEN_HOME}/bin/mvn test'
             }
             post {
